@@ -6,6 +6,7 @@ import HomeScreen from './pages/HomeScreen';
 import Tela2Screen from './pages/Tela2Screen';
 
 import MenuItem from './components/MenuItem';
+import PrivateRoute from './components/PrivateRoute';
 
 import { Container, Menu, Body } from './AppStyled';
 
@@ -25,6 +26,12 @@ export default () => {
                         <Route exact path="/">
                             <HomeScreen />
                         </Route>
+                        <PrivateRoute path="/orders">
+                            <div> Pedidos </div>
+                        </PrivateRoute>
+                        <PrivateRoute path="/profile">
+                            <div> Perfil </div>
+                        </PrivateRoute>
                         <Route path="/tela2/:nome">
                             <Tela2Screen />
                         </Route>
