@@ -7,6 +7,7 @@ import Tela2Screen from './pages/Tela2Screen';
 
 import MenuItem from './components/MenuItem';
 import PrivateRoute from './components/PrivateRoute';
+import Cart from './components/Cart';
 
 import { Container, Menu, Body } from './AppStyled';
 
@@ -37,6 +38,7 @@ export default () => {
                         </Route>
                     </Switch>
                 </Body>
+                <Cart />
             </Container>
         </BrowserRouter>
     );
