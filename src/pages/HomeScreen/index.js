@@ -15,7 +15,7 @@ import Header from '../../components/Header';
 
 import CategoryItem from '../../components/CategoryItem';
 import ProductItem from '../../components/ProductItem';
-
+import Modal from '../../components/Modal';
 
 import api from '../../api';
 
@@ -130,7 +130,10 @@ export default () => {
                         </ProductPaginationItem>
                     ))}
                 </ProductPaginationArea>
-            }   
+            }  
+            <Modal>
+                Conteúdo do Modal
+            </Modal> 
         </Container>
     );
 }
