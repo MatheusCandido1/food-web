@@ -1,19 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import ReactTooltip from 'react-tooltip';
-import { Container, CategoryArea, CategoryList } from './styled';
+import { 
+    Container, 
+    CategoryArea, 
+    CategoryList, 
+    ProductArea, 
+    ProductList,
+    ProductPaginationArea,
+    ProductPaginationItem
+} from './styled';
 
 import Header from '../../components/Header';
 
 import CategoryItem from '../../components/CategoryItem';
+import ProductItem from '../../components/ProductItem';
+
 
 import api from '../../api';
-export default () => {
-    const [categories, setCategories] = useState([]);
-    const [headerSearch, setHeaderSearch] = useState('');
-    const [activeCategory, setActiveCategory] = useState(0);
+export default () => { 
     const history = useHistory();
+    const [categories, setCategories] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [headerSearch, setHeaderSearch] = useState('');
+    const [pages, setPages] = useState(0);
 
+    const [activeCategory, setActiveCategory] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0);
+
+
+    const getProducts = async () => {
+        api.get('products').then(response => {
+           const { result } = response.data;
+           setProducts(result.data);
+           setPages(result.pages);
+           setCurrentPage(result.page);
+       });
+   }; 
 
     useEffect(() => {
         const getCategories = async () => {
@@ -28,7 +51,10 @@ export default () => {
     }, []);
 
     useEffect(() => {
+        
+   
 
+        getProducts();
     }, [activeCategory]);
 
     return (
@@ -36,7 +62,6 @@ export default () => {
             <Header search={headerSearch} onSearch={setHeaderSearch} />
 
             {categories.length > 0 &&
-                <>
                     <CategoryArea>
                         Selecione uma categoria
                         <CategoryList>
@@ -59,9 +84,35 @@ export default () => {
                             ))}
                         </CategoryList>
                     </CategoryArea>
-                </>
             }
-            
+
+            {products.length > 0 &&
+            <ProductArea>
+                <ProductList>
+                    {products.map((item, index) => (
+                        <ProductItem 
+                            key={index}
+                            data={item}
+                        />
+                    ))}
+                </ProductList>
+            </ProductArea>
+            }
+
+            {pages > 0 &&
+                <ProductPaginationArea>
+                    {Array(5).fill(0).map((item,index) => (
+                        <ProductPaginationItem 
+                            key={index} 
+                            active={currentPage}
+                            current={index+1}
+                            onClick={()=>setCurrentPage(index+1)}
+                        >
+                            {index + 1}
+                        </ProductPaginationItem>
+                    ))}
+                </ProductPaginationArea>
+            }
         </Container>
     );
 }
