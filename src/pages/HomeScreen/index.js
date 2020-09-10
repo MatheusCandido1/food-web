@@ -18,6 +18,9 @@ import ProductItem from '../../components/ProductItem';
 
 
 import api from '../../api';
+
+let timer = null;
+
 export default () => { 
     const history = useHistory();
     const [categories, setCategories] = useState([]);
@@ -26,17 +29,35 @@ export default () => {
     const [pages, setPages] = useState(0);
 
     const [activeCategory, setActiveCategory] = useState(0);
-    const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [activeSearch, setActiveSearch] = useState('');
 
 
     const getProducts = async () => {
-        api.get('products').then(response => {
+        const params = new URLSearchParams()
+        if(activeCategory !== 0)
+            params.append('category', activeCategory)
+        if(currentPage > 0)
+            params.append('page', currentPage)
+        if(activeSearch != '')
+            params.append('search', activeSearch)
+
+        api.get('products', {
+            params: params,
+        }).then(response => {
            const { result } = response.data;
            setProducts(result.data);
            setPages(result.pages);
            setCurrentPage(result.page);
        });
    }; 
+
+   useEffect(() => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            setActiveSearch(headerSearch);
+        }, 2000);
+   }, [headerSearch])
 
     useEffect(() => {
         const getCategories = async () => {
@@ -51,11 +72,9 @@ export default () => {
     }, []);
 
     useEffect(() => {
-        
-   
-
+        setProducts([]);
         getProducts();
-    }, [activeCategory]);
+    }, [activeCategory, currentPage, activeSearch]);
 
     return (
         <Container>
@@ -101,7 +120,7 @@ export default () => {
 
             {pages > 0 &&
                 <ProductPaginationArea>
-                    {Array(5).fill(0).map((item,index) => (
+                    {Array(0).fill(0).map((item,index) => (
                         <ProductPaginationItem 
                             key={index} 
                             active={currentPage}
