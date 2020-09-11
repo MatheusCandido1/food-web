@@ -12,6 +12,8 @@ import Cart from './components/Cart';
 
 import { Container, Menu, Body } from './AppStyled';
 
+import 'react-toastify/dist/ReactToastify.css';
+
 export default () => {
     const name = useSelector(state => state.user.name);
 

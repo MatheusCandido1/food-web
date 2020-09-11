@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import { 
     Container,
     ProductArea, 
@@ -17,7 +18,9 @@ import {
     ProductPrice
 } from './styled';
 
+toast.configure()
 export default ({ data, setStatus }) => {
+    const dispatch = useDispatch();
     const [quantity, setQuantity] = useState(1);
     const [price, setPrice] = useState(data.price);
 
@@ -37,6 +40,27 @@ export default ({ data, setStatus }) => {
 
     const handleIncreaseQuantity = () => {
         setQuantity(quantity + 1);
+    }
+
+    const ShowToast = () => {
+        toast.info('Produto adicionado ao carrinho!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+        });
+    }
+
+    const handleAddToCart = () => {
+        dispatch({
+            type: 'ADD_PRODUCT',
+            payload: {data, quantity}
+        });
+        setStatus(false);   
+        ShowToast();
     }
 
     return(
@@ -62,7 +86,7 @@ export default ({ data, setStatus }) => {
             </ProductArea>
             <ProductButtons>
                 <ProductButton onClick={handleCancelButton} small={true} >Cancelar</ProductButton>
-                <ProductButton>Adicionar ao carrinho</ProductButton>
+                <ProductButton onClick={handleAddToCart}>Adicionar ao carrinho</ProductButton>
             </ProductButtons>
         </Container>
     );

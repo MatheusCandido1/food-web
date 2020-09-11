@@ -3,3 +3,7 @@ body {
   font-family: 'Segoe UI', Helvetica, Arial;
   overflow-y: hidden;
 }
+
+.Toastify__toast--info {
+  border-radius: 8px !important;
+}
