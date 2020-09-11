@@ -16,6 +16,7 @@ import Header from '../../components/Header';
 import CategoryItem from '../../components/CategoryItem';
 import ProductItem from '../../components/ProductItem';
 import Modal from '../../components/Modal';
+import ModalProduct from '../../components/ModalProduct';
 
 import api from '../../api';
 
@@ -27,7 +28,9 @@ export default () => {
     const [headerSearch, setHeaderSearch] = useState('');
     const [pages, setPages] = useState(0);
     
-    const [modalStatus, setModalStatus] = useState(true);
+    const [modalStatus, setModalStatus] = useState(false);
+    
+    const [modalData, setModalData] = useState({});
 
     const [activeCategory, setActiveCategory] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
@@ -55,10 +58,10 @@ export default () => {
 
    useEffect(() => {
     clearTimeout(timer);
-    timer = setTimeout(() => {
-        setActiveSearch(headerSearch);
-    }, 2000);
-}, [headerSearch])
+        timer = setTimeout(() => {
+            setActiveSearch(headerSearch);
+        }, 2000);
+    }, [headerSearch])
 
     useEffect(() => {
         const getCategories = async () => {
@@ -76,6 +79,11 @@ export default () => {
         setProducts([]);
         getProducts();
     }, [activeCategory, currentPage, activeSearch]);
+
+    const handleProductItemClick = (data) => {
+        setModalData(data);
+        setModalStatus(true);
+    } 
 
     return (
         <Container>
@@ -113,6 +121,7 @@ export default () => {
                         <ProductItem 
                             key={index}
                             data={item}
+                            onClick={handleProductItemClick}
                         />
                     ))}
                 </ProductList>
@@ -134,11 +143,7 @@ export default () => {
                 </ProductPaginationArea>
             }  
             <Modal status={modalStatus} setStatus={setModalStatus}>
-                Conteúdo do Modal
-                <div style={{backgroundColor: '#FF0000', width: 400, height: 400}}>
-
-                </div>
-                Fim do conteúdo
+               <ModalProduct data={modalData} setStatus={setModalStatus} />
             </Modal> 
         </Container>
     );
