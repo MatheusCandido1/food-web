@@ -24,12 +24,12 @@ export const CartHeader = styled.div`
     cursor: pointer;
 `;
 export const CartText = styled.div`
+    flex: 1;
     color: #FFFFFF;
-    font-size: 17;  
+    font-size: 17px;  
 `;
 
 export const CartBody = styled.div`
-    width: 34px;
-    height: auto;   
+    display:${props => props.show ? 'block':'none'};   
 `;
 
