@@ -26,6 +26,8 @@ export default () => {
     const [products, setProducts] = useState([]);
     const [headerSearch, setHeaderSearch] = useState('');
     const [pages, setPages] = useState(0);
+    
+    const [modalStatus, setModalStatus] = useState(true);
 
     const [activeCategory, setActiveCategory] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
@@ -131,8 +133,12 @@ export default () => {
                     ))}
                 </ProductPaginationArea>
             }  
-            <Modal>
+            <Modal status={modalStatus} setStatus={setModalStatus}>
                 Conteúdo do Modal
+                <div style={{backgroundColor: '#FF0000', width: 400, height: 400}}>
+
+                </div>
+                Fim do conteúdo
             </Modal> 
         </Container>
     );
